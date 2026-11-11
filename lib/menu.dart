@@ -6,6 +6,11 @@ class MyHomePage extends StatelessWidget {
   final String npm = '2406000001';
   final String nama = 'Burhan';
   final String kelas = 'PBP A';
+  final List<ItemHomepage> items = const [
+    ItemHomepage('Lihat Proyek', Icons.folder),
+    ItemHomepage('Tambah Proyek', Icons.add_circle),
+    ItemHomepage('Logout', Icons.logout),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +51,23 @@ class MyHomePage extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final cardWidth = (constraints.maxWidth - 60) / 3;
+                  final cardHeight = cardWidth < 144 ? 144.0 : cardWidth;
+
+                  return GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(20),
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: cardWidth / cardHeight,
+                    children: items.map((item) => ItemCard(item)).toList(),
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -72,6 +94,54 @@ class InfoCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(content, textAlign: TextAlign.center),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class ItemHomepage {
+  const ItemHomepage(this.name, this.icon);
+
+  final String name;
+  final IconData icon;
+}
+
+class ItemCard extends StatelessWidget {
+  const ItemCard(this.item, {super.key});
+
+  final ItemHomepage item;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Theme.of(context).colorScheme.secondary,
+      borderRadius: BorderRadius.circular(12),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text('Kamu telah menekan tombol ${item.name}!'),
+              ),
+            );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(item.icon, color: Colors.white, size: 30),
+              const SizedBox(height: 6),
+              Text(
+                item.name,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
         ),
       ),
     );

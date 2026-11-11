@@ -16,6 +16,9 @@ void main() {
     expect(find.text('Burhan'), findsOneWidget);
     expect(find.text('Class'), findsOneWidget);
     expect(find.text('PBP A'), findsOneWidget);
+    expect(find.text('Lihat Proyek'), findsOneWidget);
+    expect(find.text('Tambah Proyek'), findsOneWidget);
+    expect(find.text('Logout'), findsOneWidget);
     expect(find.byType(FloatingActionButton), findsNothing);
 
     final theme = Theme.of(tester.element(find.byType(MyHomePage)));
@@ -23,7 +26,7 @@ void main() {
     expect(theme.colorScheme.secondary, Colors.amber.shade700);
   });
 
-  testWidgets('Owner cards fit a narrow screen', (tester) async {
+  testWidgets('Owner and action cards fit a narrow screen', (tester) async {
     await tester.binding.setSurfaceSize(const Size(320, 568));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
@@ -32,6 +35,34 @@ void main() {
     expect(find.text('2406000001'), findsOneWidget);
     expect(find.text('Burhan'), findsOneWidget);
     expect(find.text('PBP A'), findsOneWidget);
+    expect(find.text('Tambah Proyek'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('Every action card shows its own SnackBar', (tester) async {
+    await tester.pumpWidget(const MyApp());
+
+    for (final name in ['Lihat Proyek', 'Tambah Proyek', 'Logout']) {
+      await tester.tap(find.text(name));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Kamu telah menekan tombol $name!'), findsOneWidget);
+      expect(find.byType(SnackBar), findsOneWidget);
+    }
+  });
+
+  testWidgets('Action cards remain reachable on a short screen', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(640, 320));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(const MyApp());
+    await tester.ensureVisible(find.text('Logout'));
+    await tester.tap(find.text('Logout'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Kamu telah menekan tombol Logout!'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

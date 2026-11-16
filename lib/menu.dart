@@ -126,7 +126,7 @@ class ItemCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
+            ..clearSnackBars()
             ..showSnackBar(
               SnackBar(
                 content: Text('Kamu telah menekan tombol ${item.name}!'),

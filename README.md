@@ -122,12 +122,12 @@ Pemeriksaan terakhir menghasilkan **No issues found** dan **6 tes lulus**. Pengu
    | Proses | Perilaku |
    |---|---|
    | **Hot reload** | Memuat perubahan kode dan membangun ulang widget tree sambil mempertahankan state aplikasi. |
-   | **Hot restart** | Menjalankan ulang aplikasi Flutter dan menghapus state yang sedang tersimpan. |
+   | **Hot restart** | Menjalankan ulang aplikasi Flutter dan mereset state di memori aplikasi. |
    | **Full restart** | Menghentikan dan menjalankan ulang aplikasi, termasuk proses build yang diperlukan. |
 
    Hot reload cocok untuk perubahan tampilan seperti warna, teks, atau susunan widget. Proses ini tidak menjalankan ulang `main()` maupun `initState()`.
 
-   Hot restart diperlukan ketika perubahan perlu menjalankan ulang bagian inisialisasi tersebut atau ketika perubahan tertentu tidak didukung hot reload. Full restart diperlukan untuk perubahan kode native, misalnya Kotlin, Java, Swift, atau Objective-C.
+   Hot restart diperlukan ketika perubahan perlu menjalankan ulang `main()` atau `initState()`, mereset state aplikasi, atau menerapkan perubahan struktur tipe yang tidak didukung hot reload, misalnya mengubah parameter generik sebuah class. Full restart diperlukan untuk perubahan kode native, misalnya Kotlin, Java, Swift, atau Objective-C.
 
    Saat menjalankan aplikasi melalui terminal, `r` digunakan untuk hot reload dan `R` untuk hot restart. Full restart dilakukan dengan menghentikan aplikasi lalu menjalankannya kembali. [Dokumentasi hot reload](https://docs.flutter.dev/tools/hot-reload).
 

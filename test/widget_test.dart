@@ -11,11 +11,11 @@ void main() {
     expect(find.text('MyPortfolio'), findsOneWidget);
     expect(find.text('Selamat datang di MyPortfolio Mobile!'), findsOneWidget);
     expect(find.text('NPM'), findsOneWidget);
-    expect(find.text('2406000001'), findsOneWidget);
+    expect(find.text('2506546333'), findsOneWidget);
     expect(find.text('Name'), findsOneWidget);
-    expect(find.text('Burhan'), findsOneWidget);
+    expect(find.text('Muhammad Eshan Bobby Bhaskara'), findsOneWidget);
     expect(find.text('Class'), findsOneWidget);
-    expect(find.text('PBP A'), findsOneWidget);
+    expect(find.text('PBP C'), findsOneWidget);
     expect(find.text('Lihat Proyek'), findsOneWidget);
     expect(find.text('Tambah Proyek'), findsOneWidget);
     expect(find.text('Logout'), findsOneWidget);
@@ -32,9 +32,9 @@ void main() {
 
     await tester.pumpWidget(const MyApp());
 
-    expect(find.text('2406000001'), findsOneWidget);
-    expect(find.text('Burhan'), findsOneWidget);
-    expect(find.text('PBP A'), findsOneWidget);
+    expect(find.text('2506546333'), findsOneWidget);
+    expect(find.text('Muhammad Eshan Bobby Bhaskara'), findsOneWidget);
+    expect(find.text('PBP C'), findsOneWidget);
     expect(find.text('Tambah Proyek'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });

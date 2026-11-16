@@ -7,9 +7,13 @@ class MyHomePage extends StatelessWidget {
   final String nama = 'Muhammad Eshan Bobby Bhaskara';
   final String kelas = 'PBP C';
   final List<ItemHomepage> items = const [
-    ItemHomepage('Lihat Proyek', Icons.folder),
-    ItemHomepage('Tambah Proyek', Icons.add_circle),
-    ItemHomepage('Logout', Icons.logout),
+    ItemHomepage('Lihat Pengalaman', Icons.work_outline, Color(0xFF1565C0)),
+    ItemHomepage(
+      'Tambah Pengalaman',
+      Icons.add_circle_outline,
+      Color(0xFF2E7D32),
+    ),
+    ItemHomepage('Logout', Icons.logout, Color(0xFFC62828)),
   ];
 
   @override
@@ -54,7 +58,7 @@ class MyHomePage extends StatelessWidget {
               LayoutBuilder(
                 builder: (context, constraints) {
                   final cardWidth = (constraints.maxWidth - 60) / 3;
-                  final cardHeight = cardWidth < 144 ? 144.0 : cardWidth;
+                  final cardHeight = cardWidth < 160 ? 160.0 : cardWidth;
 
                   return GridView.count(
                     shrinkWrap: true,
@@ -101,10 +105,11 @@ class InfoCard extends StatelessWidget {
 }
 
 class ItemHomepage {
-  const ItemHomepage(this.name, this.icon);
+  const ItemHomepage(this.name, this.icon, this.color);
 
   final String name;
   final IconData icon;
+  final Color color;
 }
 
 class ItemCard extends StatelessWidget {
@@ -115,7 +120,7 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Theme.of(context).colorScheme.secondary,
+      color: item.color,
       borderRadius: BorderRadius.circular(12),
       clipBehavior: Clip.antiAlias,
       child: InkWell(

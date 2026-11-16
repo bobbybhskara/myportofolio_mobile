@@ -16,14 +16,28 @@ void main() {
     expect(find.text('Muhammad Eshan Bobby Bhaskara'), findsOneWidget);
     expect(find.text('Class'), findsOneWidget);
     expect(find.text('PBP C'), findsOneWidget);
-    expect(find.text('Lihat Proyek'), findsOneWidget);
-    expect(find.text('Tambah Proyek'), findsOneWidget);
+    expect(find.text('Lihat Pengalaman'), findsOneWidget);
+    expect(find.text('Tambah Pengalaman'), findsOneWidget);
     expect(find.text('Logout'), findsOneWidget);
+    expect(find.byIcon(Icons.work_outline), findsOneWidget);
+    expect(find.byIcon(Icons.add_circle_outline), findsOneWidget);
     expect(find.byType(FloatingActionButton), findsNothing);
 
     final theme = Theme.of(tester.element(find.byType(MyHomePage)));
     expect(theme.useMaterial3, isTrue);
     expect(theme.colorScheme.secondary, Colors.amber.shade700);
+
+    final backgrounds = tester
+        .widgetList<Material>(
+          find.descendant(
+            of: find.byType(ItemCard),
+            matching: find.byType(Material),
+          ),
+        )
+        .map((material) => material.color)
+        .toSet();
+    expect(backgrounds, hasLength(3));
+    expect(backgrounds, isNot(contains(null)));
   });
 
   testWidgets('Owner and action cards fit a narrow screen', (tester) async {
@@ -35,14 +49,22 @@ void main() {
     expect(find.text('2506546333'), findsOneWidget);
     expect(find.text('Muhammad Eshan Bobby Bhaskara'), findsOneWidget);
     expect(find.text('PBP C'), findsOneWidget);
-    expect(find.text('Tambah Proyek'), findsOneWidget);
+    expect(find.text('Tambah Pengalaman'), findsOneWidget);
+    await tester.ensureVisible(find.text('Tambah Pengalaman'));
+    await tester.tap(find.text('Tambah Pengalaman'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Kamu telah menekan tombol Tambah Pengalaman!'),
+      findsOneWidget,
+    );
     expect(tester.takeException(), isNull);
   });
 
   testWidgets('Every action card shows its own SnackBar', (tester) async {
     await tester.pumpWidget(const MyApp());
 
-    for (final name in ['Lihat Proyek', 'Tambah Proyek', 'Logout']) {
+    for (final name in ['Lihat Pengalaman', 'Tambah Pengalaman', 'Logout']) {
       await tester.tap(find.text(name));
       await tester.pumpAndSettle();
 

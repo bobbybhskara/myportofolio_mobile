@@ -5,6 +5,28 @@ import 'package:myportofolio_mobile/screens/menu.dart';
 import 'package:myportofolio_mobile/screens/project_form.dart';
 
 void main() {
+  for (final viewport in const {
+    'narrow screen': Size(320, 568),
+    'short screen': Size(640, 320),
+  }.entries) {
+    testWidgets('Drawer navigation fits a ${viewport.key}', (tester) async {
+      await tester.binding.setSurfaceSize(viewport.value);
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await tester.pumpWidget(const MyApp());
+      await tester.tap(find.byTooltip('Open navigation menu'));
+      await tester.pumpAndSettle();
+      expect(find.text('My Portfolio'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await tester.ensureVisible(
+        find.byKey(const ValueKey('drawer-add-project')),
+      );
+      await tester.tap(find.byKey(const ValueKey('drawer-add-project')));
+      await tester.pumpAndSettle();
+      expect(find.byType(ProjectFormPage), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+  }
+
   testWidgets('Add Project card pushes a form and can return to Home', (
     tester,
   ) async {

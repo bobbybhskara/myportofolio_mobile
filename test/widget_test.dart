@@ -8,6 +8,7 @@ import 'package:myportofolio_mobile/widgets/project_card.dart';
 void main() {
   const ownerName = 'Muhammad Eshan Bobby Bhaskara';
   const actionNames = ['Lihat Pengalaman', 'Tambah Pengalaman', 'Logout'];
+  const allActionNames = [...actionNames, 'Tambah Proyek'];
 
   testWidgets('Shows the stateless portfolio home page', (tester) async {
     await tester.pumpWidget(const MyApp());
@@ -31,6 +32,8 @@ void main() {
     expect(find.text('Lihat Pengalaman'), findsOneWidget);
     expect(find.text('Tambah Pengalaman'), findsOneWidget);
     expect(find.text('Logout'), findsOneWidget);
+    expect(find.text('Tambah Proyek'), findsOneWidget);
+    expect(find.byIcon(Icons.add_box_outlined), findsOneWidget);
     expect(find.byIcon(Icons.work_outline), findsOneWidget);
     expect(find.byIcon(Icons.add_circle_outline), findsOneWidget);
     expect(find.byType(FloatingActionButton), findsNothing);
@@ -46,7 +49,7 @@ void main() {
     await tester.pumpWidget(const MyApp());
     final backgrounds = <Color>{};
 
-    for (final name in actionNames) {
+    for (final name in allActionNames) {
       final card = find.widgetWithText(ItemCard, name);
       final background = tester
           .widget<Material>(
@@ -65,7 +68,7 @@ void main() {
       final contrast = (luminances.last + 0.05) / (luminances.first + 0.05);
       expect(contrast, greaterThanOrEqualTo(4.5), reason: name);
     }
-    expect(backgrounds, hasLength(actionNames.length));
+    expect(backgrounds, hasLength(allActionNames.length));
   });
 
   testWidgets('Every action card shows its own SnackBar', (tester) async {
@@ -131,7 +134,7 @@ void main() {
       );
       expect(nameParagraph.didExceedMaxLines, isFalse);
 
-      for (final name in actionNames) {
+      for (final name in allActionNames) {
         await tester.ensureVisible(find.text(name));
         await tester.tap(find.text(name));
         await tester.pumpAndSettle();
@@ -139,6 +142,11 @@ void main() {
         expect(find.text('Kamu telah menekan tombol $name!'), findsOneWidget);
         expect(find.byType(SnackBar), findsOneWidget);
         expect(tester.takeException(), isNull);
+        if (name == 'Tambah Proyek') {
+          Navigator.of(tester.element(find.text('Add Project Form'))).pop();
+          await tester.pumpAndSettle();
+          expect(find.byType(MyHomePage), findsOneWidget);
+        }
       }
     });
   }

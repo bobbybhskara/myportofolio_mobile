@@ -5,6 +5,32 @@ import 'package:myportofolio_mobile/menu.dart';
 import 'package:myportofolio_mobile/project_form.dart';
 
 void main() {
+  testWidgets('Add Project card pushes a form and can return to Home', (
+    tester,
+  ) async {
+    await tester.pumpWidget(const MyApp());
+    final home = tester.element(find.byType(MyHomePage));
+    final navigator = Navigator.of(home);
+
+    await tester.ensureVisible(find.text('Tambah Proyek'));
+    await tester.tap(find.text('Tambah Proyek'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ProjectFormPage), findsOneWidget);
+    expect(navigator.canPop(), isTrue);
+    expect(
+      find.text('Kamu telah menekan tombol Tambah Proyek!'),
+      findsOneWidget,
+    );
+    navigator.pop();
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ProjectFormPage), findsNothing);
+    expect(tester.element(find.byType(MyHomePage)), same(home));
+    expect(navigator.canPop(), isFalse);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('Shared drawer replaces routes for Home and Add Project', (
     tester,
   ) async {

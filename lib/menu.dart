@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:myportofolio_mobile/project_form.dart';
 import 'package:myportofolio_mobile/widgets/left_drawer.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -15,6 +16,7 @@ class MyHomePage extends StatelessWidget {
       Color(0xFF2E7D32),
     ),
     ItemHomepage('Logout', Icons.logout, Color(0xFFC62828)),
+    ItemHomepage('Tambah Proyek', Icons.add_box_outlined, Color(0xFF6A1B9A)),
   ];
 
   @override
@@ -135,6 +137,13 @@ class ItemCard extends StatelessWidget {
                 content: Text('Kamu telah menekan tombol ${item.name}!'),
               ),
             );
+          if (item.name == 'Tambah Proyek') {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (context) => const ProjectFormPage(),
+              ),
+            );
+          }
         },
         child: Padding(
           padding: const EdgeInsets.all(8),

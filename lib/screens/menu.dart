@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:myportofolio_mobile/project_form.dart';
+import 'package:myportofolio_mobile/widgets/project_card.dart';
 import 'package:myportofolio_mobile/widgets/left_drawer.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -103,62 +103,6 @@ class InfoCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(content, textAlign: TextAlign.center),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class ItemHomepage {
-  const ItemHomepage(this.name, this.icon, this.color);
-
-  final String name;
-  final IconData icon;
-  final Color color;
-}
-
-class ItemCard extends StatelessWidget {
-  const ItemCard(this.item, {super.key});
-
-  final ItemHomepage item;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: item.color,
-      borderRadius: BorderRadius.circular(12),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () {
-          ScaffoldMessenger.of(context)
-            ..clearSnackBars()
-            ..showSnackBar(
-              SnackBar(
-                content: Text('Kamu telah menekan tombol ${item.name}!'),
-              ),
-            );
-          if (item.name == 'Tambah Proyek') {
-            Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (context) => const ProjectFormPage(),
-              ),
-            );
-          }
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(item.icon, color: Colors.white, size: 30),
-              const SizedBox(height: 6),
-              Text(
-                item.name,
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white),
-              ),
-            ],
-          ),
         ),
       ),
     );

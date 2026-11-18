@@ -49,4 +49,74 @@ void main() {
     expect(find.text('A Flutter portfolio.'), findsNothing);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets(
+    'Dialog shows every input and resets category and optional fields',
+    (tester) async {
+      await tester.pumpWidget(const MaterialApp(home: ProjectFormPage()));
+      for (final entry in {
+        'project-name': 'Mobile Portfolio',
+        'project-description': 'A portfolio application.',
+        'project-technologies': 'Flutter, Django',
+        'project-link': 'https://example.com/project',
+      }.entries) {
+        await tester.ensureVisible(find.byKey(ValueKey(entry.key)));
+        await tester.enterText(find.byKey(ValueKey(entry.key)), entry.value);
+      }
+      await tester.ensureVisible(
+        find.byKey(const ValueKey('project-category')),
+      );
+      await tester.tap(find.byKey(const ValueKey('project-category')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Mobile Development').last);
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text('Save'));
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
+
+      for (final text in [
+        'Nama Proyek: Mobile Portfolio',
+        'Deskripsi: A portfolio application.',
+        'Kategori: Mobile Development',
+        'Teknologi: Flutter, Django',
+        'Tautan: https://example.com/project',
+      ]) {
+        expect(find.text(text), findsOneWidget);
+      }
+      await tester.tap(find.text('OK'));
+      await tester.pumpAndSettle();
+
+      for (final key in [
+        'project-name',
+        'project-description',
+        'project-technologies',
+        'project-link',
+      ]) {
+        final input = tester.widget<EditableText>(
+          find.descendant(
+            of: find.byKey(ValueKey(key)),
+            matching: find.byType(EditableText),
+          ),
+        );
+        expect(input.controller.text, isEmpty);
+      }
+      expect(find.text('Web Development'), findsOneWidget);
+      await tester.enterText(
+        find.byKey(const ValueKey('project-name')),
+        'Second',
+      );
+      await tester.enterText(
+        find.byKey(const ValueKey('project-description')),
+        'Fresh input.',
+      );
+      await tester.ensureVisible(find.text('Save'));
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Kategori: Web Development'), findsOneWidget);
+      expect(find.text('Teknologi: -'), findsOneWidget);
+      expect(find.text('Tautan: -'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
 }

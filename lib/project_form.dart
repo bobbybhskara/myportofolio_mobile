@@ -57,6 +57,23 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: const Text('Proyek berhasil ditambahkan!'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Nama Proyek: ${_nameController.text.trim()}'),
+              Text('Deskripsi: ${_descriptionController.text.trim()}'),
+              Text('Kategori: $_category'),
+              Text(
+                'Teknologi: ${_technologiesController.text.trim().isEmpty ? '-' : _technologiesController.text.trim()}',
+              ),
+              Text(
+                'Tautan: ${_linkController.text.trim().isEmpty ? '-' : _linkController.text.trim()}',
+              ),
+            ],
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext, true),
